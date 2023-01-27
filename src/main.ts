@@ -77,6 +77,9 @@ const displayResult = (phrase: string, isPalindrome: boolean): void => {
 };
 
 const resetResults = (): void => {
+	// get phrase input from DOM
+	const phraseInput = document.getElementById('phrase') as HTMLInputElement;
+
 	// get results table elements
 	const table = document.getElementById('results-table') as HTMLTableElement;
 	const tableBody = document.getElementById(
@@ -85,6 +88,9 @@ const resetResults = (): void => {
 
 	// hide table if shown
 	if (!table.classList.contains('d-none')) table.classList.add('d-none');
+
+	// clear input
+	phraseInput.value = '';
 
 	// clear table contents
 	tableBody.innerText = '';
