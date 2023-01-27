@@ -8,9 +8,15 @@ A palindrome is a word, phrase or sequence that reads the same backwards as forw
 
 ### Features
 
-- List
-- the
-- features
+- CSS and BootStrap Layout
+- Arrow Functions
+- HTML Templating
+- Arrays
+- Array Methods
+- String Methods
+- DOM Manipulation
+- If Statements
+- Event Listeners
 
 ### The Tech Stack
 

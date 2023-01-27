@@ -37,7 +37,7 @@ const checkPalindrome = (phrase: string): boolean => {
 	const reversePhrase = reverseString(phrase);
 
 	// compare phrases and return result
-	return phrase === reversePhrase;
+	return phrase.toUpperCase() === reversePhrase.toUpperCase();
 };
 
 // function to display result
