@@ -1,10 +1,10 @@
-# Coding Challenge Name
+# Palindrome Checker
 
 ## A Coding Challenge
 
 ### Challenge
 
-Explain the challenge here.
+A palindrome is a word, phrase or sequence that reads the same backwards as forwards. Create program that checks if the phrase entered is a palindrome.
 
 ### Features
 
@@ -14,4 +14,4 @@ Explain the challenge here.
 
 ### The Tech Stack
 
-HTML5, CSS3, BootStrap 5, TypeScript
+HTML5, CSS3, BootStrap, TypeScript

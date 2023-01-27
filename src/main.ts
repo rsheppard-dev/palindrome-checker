@@ -1,68 +1,93 @@
 import './style.css';
 
-// function to get values from user interface
-const getValues = (e: Event): void => {
-	// prevent default form behaviour (page refresh)
+// function to get phrase from user
+const getPhrase = (e: Event): void => {
+	// prevent page refreshing
 	e.preventDefault();
 
-	// get elements from html page
-	const startValueInput = document.getElementById(
-		'startValue'
-	) as HTMLInputElement;
-	const endValueInput = document.getElementById('endValue') as HTMLInputElement;
+	// get phrase input from DOM
+	const phraseInput = document.getElementById('phrase') as HTMLInputElement;
 
-	// get values from inputs and parse to integers
-	const startValue = parseInt(startValueInput.value);
-	const endValue = parseInt(endValueInput.value);
+	// get value from input
+	const phrase = phraseInput.value;
 
-	// check values entered by user are valid numbers
-	if (Number.isInteger(startValue) && Number.isInteger(endValue)) {
-		// call generateNumbers function with input values
-		const numbers = generateNumbers(startValue, endValue);
+	// clear any previous errors
+	handleError();
 
-		// call displayNumbers function
-		displayNumbers(numbers);
-	} else {
-		// display error on page if invalid input
-		handleError('You can only enter numbers in the inputs above.');
-	}
+	// validate input value
+	if (!phrase || phrase === '')
+		return handleError('You must enter a phrase in the input above!');
+
+	// call checkPalindrome function and store result
+	const isPalindrome = checkPalindrome(phrase);
+
+	// call displayResult with result
+	displayResult(phrase, isPalindrome);
 };
 
-// function to generate numbers between startValue and endValue
-const generateNumbers = (startValue: number, endValue: number): number[] => {
-	const numbers: number[] = [];
-
-	// loop through all numbers from startValue to endValue
-	for (let i = startValue; i <= endValue; i++) {
-		// add current number to end of numbers array
-		numbers.push(i);
-	}
-
-	return numbers;
+// function to reverse a string
+const reverseString = (phrase: string): string => {
+	// reverse phrase and return
+	return phrase.split('').reverse().join('');
 };
 
-// function to display number range
-const displayNumbers = (numbers: number[]): void => {
-	// get table body from html document
+// function to check if phrase is a palindrome
+const checkPalindrome = (phrase: string): boolean => {
+	// reverse phrase and store in new variable
+	const reversePhrase = reverseString(phrase);
+
+	// compare phrases and return result
+	return phrase === reversePhrase;
+};
+
+// function to display result
+const displayResult = (phrase: string, isPalindrome: boolean): void => {
+	// get results table elements
+	const table = document.getElementById('results-table') as HTMLTableElement;
 	const tableBody = document.getElementById(
-		'results'
+		'results-body'
 	) as HTMLTableSectionElement;
 
-	let templateRows = '';
+	// get template
+	const rowTemplate = document.getElementById(
+		'palindrome-template'
+	) as HTMLTemplateElement;
 
-	// loop through all the numbers
-	for (let i = 0; i < numbers.length; i++) {
-		const number = numbers[i];
+	// clone template
+	const tableRow = document.importNode(rowTemplate.content, true);
 
-		// check if current number is even or odd and assign correct class
-		const className = number % 2 === 0 ? 'even' : 'odd';
+	// store columns
+	const rowCols = tableRow.querySelectorAll('td');
 
-		// update template rows
-		templateRows += `<tr><td class="${className}">${number}<td></tr>`;
-	}
+	// show table if hidden
+	if (table.classList.contains('d-none')) table.classList.remove('d-none');
 
-	// update html in table body
-	tableBody.innerHTML = templateRows;
+	rowCols[0].innerText = phrase.toUpperCase();
+	rowCols[1].innerText = reverseString(phrase).toUpperCase();
+	rowCols[2].innerText = isPalindrome.toString().toUpperCase();
+
+	// set class based on palindrome result
+	const className = isPalindrome ? 'text-success' : 'text-danger';
+
+	// add class to palindrome result
+	rowCols[2].classList.add(className);
+
+	// add output to results table
+	tableBody.prepend(tableRow);
+};
+
+const resetResults = (): void => {
+	// get results table elements
+	const table = document.getElementById('results-table') as HTMLTableElement;
+	const tableBody = document.getElementById(
+		'results-body'
+	) as HTMLTableSectionElement;
+
+	// hide table if shown
+	if (!table.classList.contains('d-none')) table.classList.add('d-none');
+
+	// clear table contents
+	tableBody.innerText = '';
 };
 
 // function to display and hide error message
@@ -81,8 +106,12 @@ const handleError = (message?: string): void => {
 	}
 };
 
-// get button element
+// get button elements
 const submitButton = document.getElementById('submit') as HTMLButtonElement;
+const resetButton = document.getElementById('reset') as HTMLButtonElement;
 
-// create event listener for when user clicks button
-submitButton.addEventListener('click', getValues);
+// create event listeners for when user clicks buttons
+submitButton.addEventListener('click', getPhrase);
+resetButton.addEventListener('click', resetResults);
+
+export {};
